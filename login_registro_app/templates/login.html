@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block titulo %}Login{% endblock %}
+
+{% load static %}
+{% block content %}      
+    <div class="row h-100">
+        <div class="col p-0 text-center d-flex justify-content-center align-items-center display-none">
+            <img src="{% static 'img/fondo-login.jpg' %}" class="w-100">
+        </div>
+        <div class="col p-0 bg-custom d-flex justify-content-center align-items-center flex-column w-100">
+            <form class="w-75" action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="email_login" class="form-label">Email</label>
+                    <input type="text" class="form-control" id="email_login" name="email_login"> 
+                </div>
+                <div class="mb-3">
+                    <label for="password_login" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password_login" name="password_login">
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="recuerdame">
+                            <label class="form-check-label" for="recuerdame">
+                                Recuerdame
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="registrarse"></label>
+                        <a href="{% url 'registro' %}" data-bs-toggle="modal" data-bs-target="#modal_registro"><i class="bi bi-file-person text-white"></i> Registrarse</a>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-custom btn-block mt-3">Ingresar</button>
+            </form>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" data-bs-backdrop="static" id="modal_registro" tabindex="-1" aria-labelledby="modal_registroLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content bg-custom">
+            <div class="modal-header">
+            <h5 class="modal-title text-white" id="modal_registroLabel">Registro de nuevo usuario</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-modal">
+                <form action="{% url 'registro' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="firstname" class="form-label text-dark">Nombre</label>
+                        <input type="text" class="form-control" id="firstname" name="firstname" value="{{ request.session.registro_firstname }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastname" class="form-label text-dark">Apellido</label>
+                        <input type="text" class="form-control" id="lastname" name="lastname" value="{{ request.session.registro_lastname }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label text-dark">Email</label>
+                        <input type="text" class="form-control" id="email" name="email" value="{{ request.session.registro_email }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="birthday" class="form-label text-dark">Fecha de nacimiento</label>
+                        <input type="date" class="form-control" id="birthday" name="birthday" value="{{ request.session.registro_birthday }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label text-dark">Contraseña</label>
+                        <div class="row">
+                            <div class="col-10">
+                                <input type="password" class="form-control" id="password" name="password">
+                            </div>
+                            <div class="col-2 input-group-append">
+                                <button id="show_password" class="btn btn-custom" type="button" onclick="mostrarPassword()"><span class="fa fa-eye-slash icon"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password_check" class="form-label text-dark">Repetir contraseña</label>
+                        <div class="row">
+                            <div class="col-10">
+                                <input type="password" class="form-control" id="password_check" name="password_check">
+                            </div>
+                            <div class="col-2 input-group-append">
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <button type="submit" class="btn btn-custom btn-block">Registrarse</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+            
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        function mostrarPassword(){
+                let cambio1 = document.getElementById("password");
+                let cambio2 = document.getElementById("password_check");
+                
+                if(cambio1.type == "password"){
+                    cambio1.type = "text";
+                    cambio2.type = "text";
+                    
+                    $('.icon').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+                }
+                else{
+                    cambio1.type = "password";
+                    cambio2.type = "password";
+                    
+                    $('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+                }
+            } 
+    </script> 
+{% endblock %}
