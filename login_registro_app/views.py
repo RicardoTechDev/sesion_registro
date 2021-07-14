@@ -103,11 +103,22 @@ def new_user (request):
                                             password = password_encryp,
                                             birthday = request.POST['birthday'],
                                             )
+            usuario = {
+                    "id" : new_user.id,
+                    "name" : f"{new_user}", # usamos el "def __str__(self)" definido en el modelo con return f"{self.firstname} {self.lastname}"
+                    "email" : new_user.email,
+                    "birthday" : new_user.birthday,
+                    "rol" : new_user.rol
+                }
+            request.session['usuario'] = usuario
             
             messages.success(request, f'Se realizado el registro con exito.')
-            # redirigir a la ruta de exito
-
-            return redirect(f'/')
+            #redirigimos a la ruta según el rol del uuario
+            if request.session['usuario']['rol'] == "ADMIN" :
+                    return redirect("/admin")
+                
+            else :
+                return redirect("/")
 
     if request.method == 'GET':
         context = {

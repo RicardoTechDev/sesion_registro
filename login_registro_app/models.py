@@ -4,16 +4,17 @@ import datetime, re
 
 class  UserManager(models.Manager):
    def validador_basico(self, postData):
+      
       EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
       SOLO_LETRAS = re.compile(r'^[a-zA-Z. ]+$')
 
       errors = {}
 
       if len(postData['firstname']) < 2:
-         errors['firstname_len'] = "nombre debe tener al menos 2 caracteres de largo";
+         errors['firstname_len'] = "nombre debe tener al menos 2 caracteres de largo"
 
       if len(postData['lastname']) < 2:
-         errors['lastname_len'] = "apellido debe tener al menos 2 caracteres de largo";
+         errors['lastname_len'] = "apellido debe tener al menos 2 caracteres de largo"
 
       if not EMAIL_REGEX.match(postData['email']):
          errors['email'] = "correo invalido"
@@ -23,28 +24,11 @@ class  UserManager(models.Manager):
          errors['solo_letras'] = "solo letras en nombre y apellido porfavor"
 
       
-      if postData['birthday'] !="":
-         errors['birthday'] = "debe ingresar la edad"
-         '''
-         today = datetime.date.today()
-         birthday_new_user =datetime.datetime.strptime(postData['birthday'], "%Y-%m-%d").date()
-         
-
-         birthday_new_user.year
-         birthday_new_user.month
-         birthday_new_user.day
-
-         today.year
-         today.month
-         today.day
-
-         
-         if years < today:
-            errors['birthday'] = "debe ser mayor de edad para registrarse";
-         '''
+      if postData['birthday'] =="":
+         errors['birthday'] = "debe ingresar la fecha de nacimiento"
 
       if len(postData['password']) < 8:
-         errors['password'] = "contraseña debe tener al menos 8 caracteres";
+         errors['password'] = "contraseña debe tener al menos 8 caracteres"
 
       if postData['password'] != postData['password_check'] :
          errors['password_confirm'] = "las contraseña no son iguales."

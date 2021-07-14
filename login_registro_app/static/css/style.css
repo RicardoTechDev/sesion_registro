@@ -14,6 +14,9 @@ footer{
     line-height: 2;
 }
 
+.bg-custom-register{
+    background-color: #E1E8EB;
+}
 .bg-custom {
     background-color: #7952B3;
 }
